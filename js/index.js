@@ -1,90 +1,81 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const apiUrl = 'https://api.example.com/books';
+document.addEventListener("DOMContentLoaded", function () {
+  const apiUrl = "https://fakestoreapi.com/products";
+  const productList = document.getElementById("product-list");
 
-    
-    function fetchBooks() {
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                renderBooks(data);
-            })
-            .catch(error => {
-                console.error('Error fetching books:', error);
-            });
-    }
+  function fetchProducts() {
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        renderProducts(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }
 
-    
-    function renderBooks(books) {
-        const bookList = document.getElementById('book-list');
-        bookList.innerHTML = '';
+  function renderProducts(productsList) {
+    productList.innerHTML = "";
 
-        books.forEach(book => {
-            const bookItem = document.createElement('div');
-            bookItem.classList.add('book-item');
-            bookItem.innerHTML = `
-                <strong>${book.title}</strong> - ${book.author}
-                <button class="delete-btn" data-id="${book.id}">Eliminar</button>
-            `;
-            bookList.appendChild(bookItem);
+    productsList.forEach((productItem) => {
+      const productDiv = document.createElement("div");
+      productDiv.classList.add("product-item");
+      productDiv.innerHTML = `
+        <strong>${productItem.title}</strong> - ${productItem.author}
+        <button class="delete-btn" data-id="${productItem.id}">Eliminar</button>
+      `;
+      productList.appendChild(productDiv);
 
-            
-            const deleteButton = bookItem.querySelector('.delete-btn');
-            deleteButton.addEventListener('click', () => {
-                deleteBook(book.id);
-            });
-        });
-    }
-
-    
-    function deleteBook(bookId) {
-        fetch(`${apiUrl}/${bookId}`, {
-            method: 'DELETE'
-        })
-        .then(() => fetchBooks())
-        .catch(error => {
-            console.error('Error deleting book:', error);
-        });
-    }
-
-    
-    const addBookForm = document.getElementById('add-book-form');
-    addBookForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        const title = document.getElementById('title').value;
-        const author = document.getElementById('author').value;
-
-        
-        if (title.trim() === '' || author.trim() === '') {
-            alert('Por favor ingresa el título y el autor del libro.');
-            return;
-        }
-
-       
-        const newBook = {
-            title: title,
-            author: author
-        };
-
-        
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newBook)
-        })
-        .then(response => response.json())
-        .then(() => {
-            fetchBooks(); 
-            document.getElementById('title').value = '';
-            document.getElementById('author').value = '';
-        })
-        .catch(error => {
-            console.error('Error adding book:', error);
-        });
+      const deleteButton = productDiv.querySelector(".delete-btn");
+      deleteButton.addEventListener("click", () => {
+        deleteProducts(productItem.id);
+      });
     });
+  }
 
-    
-    fetchBooks();
+  function deleteProducts(productId) {
+    fetch(`${apiUrl}/${productId}`, {
+      method: "DELETE",
+    })
+      .then(() => fetchProducts())
+      .catch((error) => {
+        console.error("Error deleting product:", error);
+      });
+  }
+
+  const addProductsForm = document.getElementById("add-product-form");
+  addProductsForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+
+    if (title.trim() === "" || author.trim() === "") {
+      alert("Ingresá el título y el autor del producto.");
+      return;
+    }
+
+    const newProduct = {
+      title: title,
+      author: author,
+    };
+
+    fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newProduct),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        fetchProducts();
+        document.getElementById("title").value = "";
+        document.getElementById("author").value = "";
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+      });
+  });
+
+  fetchProducts();
 });

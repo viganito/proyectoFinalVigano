@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Libros </h1>
-        <form id="add-book-form">
-            <label for="title">Título:</label>
-            <input type="text" id="title" required>
-            <label for="author">Autor:</label>
-            <input type="text" id="author" required>
-            <button type="submit">Agregar Libro</button>
-        </form>
-        <div id="book-list"></div>
-    </div>
+    <form id="add-product-form">
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="text" id="author" placeholder="Author" required>
+        <button type="submit">Add Product</button>
+    </form>
+    <div id="product-list"></div>
 
     <script src="js/index.js"></script>
 </body>
